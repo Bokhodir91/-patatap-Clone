@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Patatap Clone</title>
+	<script type="text/javascript" src="Assets/JS/lib/paper-full.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.14/howler.js"></script>
+	<link rel="stylesheet" type="text/css" href="Assets/CSS/patatap.css">
+	<script type="text/paperscript" canvas="myCanvas">
+		// function makeCircles(){
+		// 	var start = new Point(0,0)
+		// 	var myCircle = new Path.Circle(start + [0, 100], 10);
+		// 	myCircle.fillColor = 'black';
+		// }
+		// var start = new Point(0,0)
+
+		// for (var x = 0; x < 1000; x += 100) {
+		// 	for (var y = 0; y < 1000; y+=100) {
+		// 		new Path.Circle(new Point (x, y), 10).fillColor = 'red';
+		// 	}
+			
+		// }
+
+		// Howler.js code
+
+		var keyData = {
+			a:{
+				color: 'purple',
+				sound: new Howl({
+  					src: ['sounds/bubbles.mp3']
+				})
+			},
+
+			s:{
+				color: 'green',
+				sound: new Howl({
+  					src: ['sounds/clay.mp3']
+				})
+			},
+			d:{
+				color: 'yellow',
+				sound: new Howl({
+					src: ['sounds/confetti.mp3']
+				})
+			}
+		}
+
+		// Howler.js code block end
+
+		var circles = [];
+
+		function onKeyDown(event) {
+			if (keyData[event.key]) {
+				// get max points of current view
+				var maxPoint = new Point(view.size.width, view.size.height);
+			
+				// generate random number
+				var ranPoint = Point.random();
+
+				// multiply maxPoint to ranPoint to get random point on the view
+				var point = maxPoint * ranPoint;
+				var newCircle = new Path.Circle(new Point(point),500);
+				newCircle.fillColor = keyData[event.key].color;
+				keyData[event.key].sound.play();
+				circles.push(newCircle);
+			}
+		}
+
+		// var animatedCircle = new Path.Circle(new Point(300,300), 300);
+		// animatedCircle.fillColor = 'green';
+		function onFrame(event){
+			for (var i = 0; i < circles.length; i++) {
+				circles[i].fillColor.hue += 1;
+				circles[i].scale(.9);
+				if(circles[i].area < 1){
+					circles[i].remove();
+					circles.splice(i,1);
+					i--;
+					console.log(circles);
+				}
+			}
+			// animatedCircle.fillColor.hue += 1;
+			// animatedCircle.scale(.9);
+		}
+		
+	
+	
+</script>
+</head>
+<body>
+	<canvas id="myCanvas" resize></canvas>
+</body>
+</html>
